@@ -1,0 +1,46 @@
+$company-theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "tertiary": $tertiary
+);
+
+@each $theme, $color in $company-theme-colors {
+    .bg-sertec-#{$theme} {
+        background-color: $color;
+    }
+}
+
+$opacity-theme-colors: (
+    "default": $default,
+    "90": $_90,
+    "80": $_80,
+    "70": $_70,
+    "60": $_60,
+    "50": $_50,
+    "40": $_40,
+    "30": $_30,
+    "20": $_20,
+    "10": $_10,
+);
+
+@each $opacity, $color in $opacity-theme-colors {
+    .opacity-sertec-#{$opacity} {
+        background-color: $color;
+    }
+}
+
+$ribbon-theme-colors: (
+    "white": $ribbon_white,
+    "yellow": $ribbon_yellow,
+    "red": $ribbon_red,
+    "blue": $ribbon_blue,
+    "black": $ribbon_black,
+    "silver": $ribbon_silver,
+    "gold": $ribbon_gold
+);
+
+@each $ribbon, $color in $ribbon-theme-colors {
+    .ribbon-#{$ribbon} {
+        color: $color;
+    }
+}

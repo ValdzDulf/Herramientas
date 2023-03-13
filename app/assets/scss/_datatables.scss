@@ -1,0 +1,9 @@
+@media screen and (max-width: 768px) {
+    li.paginate_button {
+        display: none;
+
+        &.previous, &.next {
+            display: inline;
+        }
+    }
+}
