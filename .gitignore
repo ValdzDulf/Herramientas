@@ -1,0 +1,8 @@
+# Visual Studio Code.
+.vscode/*
+
+# Jet Brains.
+.idea/*
+
+# Config files.
+.config/*
