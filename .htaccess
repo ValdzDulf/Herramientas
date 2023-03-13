@@ -1,0 +1,13 @@
+Options -Indexes
+Options -Multiviews
+
+# Redirect to default page.
+RewriteEngine On
+RewriteRule ^$ /herramientas/app/Session [L,R=301]
+
+# Return Apache in the Server header, returned on every page request.
+ServerSignature Off
+
+# Disable expose PHP.
+RewriteCond %{QUERY_STRING} PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC]
+RewriteRule .* - [F]

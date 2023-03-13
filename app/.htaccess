@@ -1,0 +1,14 @@
+Options -Multiviews
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+php_value max_execution_time 2700
+php_value mysql.connect_timeout 2700
+php_value mssql.timeout 2700
+
+php_value upload_max_filesize 100M
