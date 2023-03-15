@@ -77,7 +77,7 @@
             </section>
         </main>
 
-        <div id="modal--update--user-info" class="modal fade" tabindex="-1" data-bs-backdrop="static"
+        <div id="modal__update--user-info" class="modal fade" tabindex="-1" data-bs-backdrop="static"
              data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="border-0 modal-content">

@@ -1,6 +1,6 @@
 'use strict';
 
-const modal = new bootstrap.Modal(document.getElementById("modal--update--user-info"), {});
+const modal = new bootstrap.Modal(document.getElementById("modal__update--user-info"), {});
 
 /**
  * --------------------------------------------------------------------------
