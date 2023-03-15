@@ -18,6 +18,18 @@ use core\exceptions\InputDataException;
 class Helpers
 {
     /**
+     * Create the folder or check if it exists.
+     *
+     * @param  string  $path  Path where the file will be stored.
+     *
+     * @return bool true if folder was created or exists, false if wasn't created or doesn't exist.
+     */
+    public static function createFolder($path)
+    {
+        return @mkdir($path, 0777, true) || @is_dir($path);
+    }
+
+    /**
      * Retrieve IP address.
      *
      * @return string
