@@ -54,4 +54,31 @@ class UserModel
 
         return DatabaseConnection::dmlStatement($statement);
     }
+
+    /**
+     * Updates the user's contact information.
+     *
+     * @throws DatabaseException Will throw the exception if errors exist during a transaction with the
+     *                           database.
+     *
+     * @param  string  $jobCode         Unique user key.
+     * @param  string  $email           User's email.
+     * @param  string  $phoneExtension  User's telephone extension.
+     *
+     * @return int|string Number of affected rows, -1 indicates error.
+     */
+    public function updateContactData($jobCode, $email, $phoneExtension)
+    {
+        $statement = "
+            UPDATE
+                data.User
+            SET
+                email = '$email',
+                phoneExtension = $phoneExtension
+            WHERE
+                jobCode = '$jobCode';
+        ";
+
+        return DatabaseConnection::dmlStatement($statement);
+    }
 }
