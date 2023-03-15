@@ -60,6 +60,34 @@ class PersonDAOModel
     public $curp;
 
     /**
+     * Fetches all persons, no matter their activation status.
+     *
+     * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
+     *                            database.
+     *
+     * @return array An associative array holding the person list.
+     */
+    public function getAllPersons()
+    {
+        $statement = "
+            SELECT
+                id,
+                firstSurname,
+                secondSurname,
+                firstName,
+                gender,
+                dateOfBirth,
+                curp,
+                jobCode,
+                isActive
+            FROM
+                data.Person;
+        ";
+
+        return DatabaseConnection::dqlStatement($statement);
+    }
+
+    /**
      * Fetches the person's data using his unique key.
      *
      * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
