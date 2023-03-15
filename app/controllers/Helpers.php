@@ -30,6 +30,18 @@ class Helpers
     }
 
     /**
+     * Transforms the first letter of the string to uppercase.
+     *
+     * @param string $name Name to be converted.
+     *
+     * @return string Formatted name.
+     */
+    public static function firstLetterStringUpperCase($name)
+    {
+        return ucwords(mb_strtolower($name, 'UTF-8'));
+    }
+
+    /**
      * Retrieve IP address.
      *
      * @return string
