@@ -86,6 +86,45 @@ class EmployeeDAOModel
     public $colorRibbon;
 
     /**
+     * Fetches all employees no matter their activation status.
+     *
+     * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
+     *                            database.
+     *
+     * @return array An associative array holding the employee list.
+     */
+    public function getAllEmployees()
+    {
+        $statement = "
+            SELECT
+                jobCode,
+                personId,
+                tenuredDirectorCode,
+                directorCode,
+                managerCode,
+                supervisorCode,
+                position,
+                shift,
+                branch,
+                isActive,
+                CASE
+                    WHEN colorRibbon = 'AMARRILLO' THEN 'yellow'
+                    WHEN colorRibbon = 'AZUL' THEN 'blue'
+                    WHEN colorRibbon = 'BLANCO' THEN 'white'
+                    WHEN colorRibbon = 'DORADO' THEN 'gold'
+                    WHEN colorRibbon = 'NEGRO' THEN 'black'
+                    WHEN colorRibbon = 'PLATA' THEN 'silver'
+                    WHEN colorRibbon = 'ROJO' THEN 'red'
+                    ELSE colorRibbon
+                END AS colorRibbon
+            FROM
+                data.Employee
+        ";
+
+        return DatabaseConnection::dqlStatement($statement);
+    }
+
+    /**
      * Fetches the employee's data using his unique code.
      *
      * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
