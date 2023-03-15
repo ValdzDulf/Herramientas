@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\controllers\Helpers;
 use core\exceptions\DatabaseException;
 
 use core\models\DatabaseConnection;
@@ -130,9 +131,9 @@ class PersonDAOModel
     private function setPerson($data)
     {
         $this->id = $data['id'];
-        $this->firstSurname = ucwords(mb_strtolower($data['firstSurname'], 'UTF-8'));
-        $this->secondSurname = ucwords(mb_strtolower($data['secondSurname'], 'UTF-8'));
-        $this->firstName = ucwords(mb_strtolower($data['firstName'], 'UTF-8'));
+        $this->firstSurname = Helpers::firstLetterStringUpperCase($data['firstSurname']);
+        $this->secondSurname = Helpers::firstLetterStringUpperCase($data['secondSurname']);
+        $this->firstName = Helpers::firstLetterStringUpperCase($data['firstName']);
         $this->fullName = "$this->firstSurname $this->secondSurname $this->firstName";
         $this->gender = $data['gender'];
         $this->dateOfBirth = $data['dateOfBirth'];
