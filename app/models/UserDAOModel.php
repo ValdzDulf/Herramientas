@@ -46,6 +46,64 @@ class UserDAOModel
     public $phoneExtension;
 
     /**
+     * Fetches all users no matter their activation status.
+     *
+     * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
+     *                            database.
+     *
+     * @return array An associative array holding the person list.
+     */
+    public function getAllUsers() {
+        $statement = "
+            SELECT
+                userT.id,
+                profileT.id AS profileId,
+                descriptiveName,
+                userT.jobCode,
+                email,
+                phoneExtension,
+                userT.isActive,
+                logT.wrongAttempts,
+                sessionData.lastSuccessAccessDate,
+                DATEDIFF(CURRENT_TIMESTAMP, sessionData.lastSuccessAccessDate) AS inactiveDays
+            FROM
+                data.User as userT
+            INNER JOIN
+                data.Profile as profileT
+                ON userT.profileId = profileT.id
+            LEFT JOIN
+                (
+                    SELECT
+                        jobCode,
+                        SUM(isWrongAttempt) AS wrongAttempts
+                    FROM
+                        archive.SessionLog
+                    WHERE
+                        isWrongAttempt = 1
+                    GROUP BY
+                        jobCode
+                ) AS logT
+                ON userT.jobCode = logT.jobCode
+            LEFT JOIN
+                (
+                    SELECT
+                        jobCode,
+                        MAX(loginDate) AS lastSuccessAccessDate
+                    FROM
+                        archive.SessionLog
+                    WHERE
+                        isWrongAttempt = 0
+                    GROUP BY
+                        jobCode
+                ) AS sessionData
+                ON userT.jobCode = sessionData.jobCode
+            ORDER BY userT.id;
+        ";
+
+        return DatabaseConnection::dqlStatement($statement);
+    }
+
+    /**
      * Fetches the user's data using his unique code.
      *
      * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
