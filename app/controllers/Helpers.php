@@ -33,13 +33,49 @@ class Helpers
      *
      * @throws InputDataException Will throw the exception if the string is empty.
      *
-     * @param bool        $isZeroAllowed Flag indicating if zero is allowed.
-     * @param string|null $string        String to validate.
+     * @param  bool         $isZeroAllowed  Flag indicating if zero is allowed.
+     * @param  string|null  $string         String to validate.
      */
     public static function isEmpty($string, $isZeroAllowed = false)
     {
         if ((!$isZeroAllowed && empty($string)) || ($isZeroAllowed && $string !== '0' && empty($string))) {
             throw new InputDataException('This data is required');
+        }
+    }
+
+    /**
+     * Checks if the email is in SERTEC's domain.
+     *
+     * @throws InputDataException Will throw the exception if the email is invalid.
+     *
+     * @param  string  $email  Email to validate.
+     *
+     * @return void
+     */
+    public static function isMailFromSertecDomain($email)
+    {
+        $regex = '/^[\w.-]+@sertec.com.mx$/';
+
+        if (!preg_match($regex, $email)) {
+            throw new InputDataException("Doesn't belong to the domain sertec.com.mx");
+        }
+    }
+
+    /**
+     * Checks if the phone extension is in the correct format.
+     *
+     * @throws InputDataException Will throw the exception if the email is invalid.
+     *
+     * @param  string  $phoneExtension  Extension to validate.
+     *
+     * @return void
+     */
+    public static function isValidExtension($phoneExtension)
+    {
+        $regex = '/^[0-9]{4}$/';
+
+        if (!preg_match($regex, $phoneExtension)) {
+            throw new InputDataException("Doesn't comply with the requested format (four digits)");
         }
     }
 }
