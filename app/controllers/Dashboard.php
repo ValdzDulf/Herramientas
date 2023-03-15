@@ -145,6 +145,11 @@ class Dashboard
         }
     }
 
+    /**
+     * Try toupdate the user's contact data.
+     *
+     * @return void
+     */
     public function updateUserContactData()
     {
         $webServiceResponse = new WebServiceResponseModel();
