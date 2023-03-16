@@ -22,8 +22,8 @@
                     <thead>
                         <tr class="opacity-sertec-80 text-light">
                             <th class="align-middle text-center">Id</th>
-                            <th class="align-middle text-center">Last Name</th>
-                            <th class="align-middle text-center">Middle Name</th>
+                            <th class="align-middle text-center">First Surname</th>
+                            <th class="align-middle text-center">Second Surname</th>
                             <th class="align-middle text-center">First Name</th>
                             <th class="align-middle text-center">Gender</th>
                             <th class="align-middle text-center">Status</th>
