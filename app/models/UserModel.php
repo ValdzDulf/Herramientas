@@ -81,4 +81,55 @@ class UserModel
 
         return DatabaseConnection::dmlStatement($statement);
     }
+
+    /**
+     * Updates the user's status.
+     *
+     * @throws DatabaseException Will throw the exception if errors exist during a transaction with the
+     *                           database.
+     *
+     * @param  integer  $id       Unique user identifier.
+     * @param  string   $jobCode  Unique user key.
+     *
+     * @return int|string Number of affected rows, -1 indicates error.
+     */
+    public function updateStatus($id, $jobCode)
+    {
+        $statement = "
+            UPDATE
+                data.User
+            SET
+                isActive = IF (isActive = 0, 1, 0)
+            WHERE
+                id = $id
+                AND jobCode = '$jobCode';
+        ";
+
+        return DatabaseConnection::dmlStatement($statement);
+    }
+
+    /**
+     * Updates the user's profile.
+     *
+     * @throws DatabaseException Will throw the exception if errors exist during a transaction with the
+     *                           database.
+     *
+     * @param  integer  $userId     Unique user identifier.
+     * @param  integer  $profileId  Unique profile identifier.
+     *
+     * @return int|string Number of affected rows, -1 indicates error.
+     */
+    public function updateProfile($userId, $profileId)
+    {
+        $statement = "
+            UPDATE
+                data.User
+            SET
+                profileId = $profileId
+            WHERE
+                id = $userId;
+        ";
+
+        return DatabaseConnection::dmlStatement($statement);
+    }
 }
