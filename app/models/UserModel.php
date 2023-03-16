@@ -56,6 +56,66 @@ class UserModel
     }
 
     /**
+     * Updates the rows for the blocking of erroneous attempts.
+     *
+     * @throws DatabaseException Will throw the exception if errors exist during a transaction with the
+     *                           database.
+     *
+     * @param  string  $jobCode                Unique employee code.
+     * @param  string  $lastSuccessAccessDate  Last successful login date.
+     *
+     * @return int|string Number of affected rows, -1 indicates error.
+     */
+    public function unlockWrong($jobCode, $lastSuccessAccessDate)
+    {
+        $statement = "
+            UPDATE
+                archive.SessionLog
+            SET
+                loginDate = CURRENT_TIMESTAMP,
+                isWrongAttempt = 0,
+                descriptionAttempt = 'Unlock'
+            WHERE
+                jobCode = '$jobCode'
+                AND isWrongAttempt = 1
+                AND DATE(loginDate) <= '$lastSuccessAccessDate';
+        ";
+
+        return DatabaseConnection::dmlStatement($statement);
+    }
+
+    /**
+     * Update the row for inactive days blocking.
+     *
+     * @throws DatabaseException Will throw the exception if errors exist during a transaction with the
+     *                           database.
+     *
+     * @param  string  $jobCode                Unique employee code.
+     * @param  string  $lastSuccessAccessDate  Last successful login date.
+     *
+     * @return int|string Number of affected rows, -1 indicates error.
+     */
+    public function unlockInactiveDays($jobCode, $lastSuccessAccessDate)
+    {
+        $statement = "
+            UPDATE
+                archive.SessionLog
+            SET
+                loginDate = CURRENT_TIMESTAMP,
+                isWrongAttempt = 0,
+                descriptionAttempt = 'success'
+            WHERE
+                jobCode = '$jobCode'
+                AND DATE(loginDate) <= '$lastSuccessAccessDate'
+            ORDER BY
+                id DESC
+            LIMIT 1
+        ";
+
+        return DatabaseConnection::dmlStatement($statement);
+    }
+
+    /**
      * Updates the user's contact information.
      *
      * @throws DatabaseException Will throw the exception if errors exist during a transaction with the
