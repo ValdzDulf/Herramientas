@@ -53,7 +53,8 @@ class UserDAOModel
      *
      * @return array An associative array holding the person list.
      */
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
         $statement = "
             SELECT
                 userT.id,
@@ -93,6 +94,7 @@ class UserDAOModel
                         archive.SessionLog
                     WHERE
                         isWrongAttempt = 0
+                        AND descriptionAttempt = 'success'
                     GROUP BY
                         jobCode
                 ) AS sessionData
