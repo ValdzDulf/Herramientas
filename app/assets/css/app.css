@@ -91,5 +91,55 @@
     display: inline;
   }
 }
+.dispositivo, .dispositivo-responsivo {
+  width: 320px;
+  height: 500px;
+  border-radius: 36px;
+  border-style: solid;
+  border-width: 60px 16px;
+  display: inline-block;
+  border-color: #999999;
+}
+
+.dispositivo-mensaje {
+  float: left;
+  max-width: 93%;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: #e5e5ea;
+  margin-top: 10px;
+  margin-left: 10px;
+  word-break: break-word;
+  width: 93%;
+  text-align: left;
+  font-size: 10pt;
+}
+
+@media screen and (min-width: 992px) {
+  .dispositivo-responsivo {
+    width: 700px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .dispositivo-responsivo {
+    width: 960px;
+    height: 700px;
+    border-radius: 6px;
+    border-width: 24px 24px 80px;
+  }
+}
+.xdsoft_datetimepicker .xdsoft_label i, .xdsoft_datetimepicker .xdsoft_prev, .xdsoft_datetimepicker .xdsoft_next, .xdsoft_datetimepicker .xdsoft_today_button, .xdsoft_datetimepicker .xdsoft_year {
+  display: none;
+}
+.xdsoft_datetimepicker .xdsoft_month {
+  width: 100%;
+  text-align: center;
+}
+.xdsoft_datetimepicker .xdsoft_label {
+  cursor: default;
+}
+.xdsoft_datetimepicker .xdsoft_label:hover > span {
+  text-decoration: none;
+}
 
 /*# sourceMappingURL=app.css.map */

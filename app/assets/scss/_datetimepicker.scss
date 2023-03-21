@@ -1,0 +1,18 @@
+.xdsoft_datetimepicker {
+    .xdsoft_label i, .xdsoft_prev, .xdsoft_next, .xdsoft_today_button, .xdsoft_year {
+        display: none;
+    }
+
+    .xdsoft_month {
+        width: 100%;
+        text-align: center;
+    }
+
+    .xdsoft_label {
+        cursor: default;
+
+        &:hover>span {
+            text-decoration: none;
+        }
+    }
+}
