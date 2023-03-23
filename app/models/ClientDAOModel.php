@@ -44,4 +44,40 @@ class ClientDAOModel
 
         return DatabaseConnection::dqlStatement($statement);
     }
+
+    /**
+     * Fetches the clients available to a manager.
+     *
+     * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
+     *                            database.
+     *
+     * @param  integer  $managerId  Unique manager identifier.
+     *
+     * @return array An associative array holding the client list.
+     */
+    public function getClientsExcludingManager($managerId)
+    {
+        $statement = "
+            SELECT
+                id,
+                internalKey,
+                descriptiveName,
+                bundle
+            FROM
+                data.Client AS clientT
+            WHERE
+                NOT EXISTS(
+                    SELECT
+                        id
+                    FROM
+                        data.ClientManager AS clientManagerT
+                    WHERE
+                        clientManagerT.clientId = clientT.id
+                        AND clientManagerT.managerId = $managerId
+                )
+                AND clientT.isActive = 1;
+        ";
+
+        return DatabaseConnection::dqlStatement($statement);
+    }
 }
