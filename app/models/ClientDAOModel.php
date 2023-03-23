@@ -25,6 +25,8 @@ class ClientDAOModel
      * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
      *                            database.
      *
+     * @param  integer  $id  Unique client identifier.
+     *
      * @return array An associative array holding the client list.
      */
     public function getClientById($id)
