@@ -31,6 +31,90 @@ export const buildPopover = (id, content, theme) => {
 
 /**
  * --------------------------------------------------------------------------
+ * Selector builder.
+ * --------------------------------------------------------------------------
+ */
+
+/**
+ * Dynamically builds a selector.
+ *
+ * @param {object}      selectorObject Element object.
+ * @param {string}      methodName     Name of the method to be executed
+ * @param {string}      containerName  Name associated with the element to be created to identify the
+ *                                     different HTML elements.
+ * @param {string}      selectLabel    Legend displayed on the select element.
+ * @param {string}      selectName     Element identifier name select.
+ * @param {string|null} args           Parameters sent in the request.
+ *
+ * @return void
+ */
+export const buildSelector = (selectorObject, methodName, containerName, selectLabel, selectName, args = null) => {
+    let request = $.ajax({
+        method: 'GET',
+        url: `SelectorBuilder/${methodName}` + (!args ? '' : `?${args}`),
+        dataType: 'JSON',
+        beforeSend: function () {
+            // Clears dynamic field container.
+            $(`#div__dynamic-field--${containerName}`).remove()
+        }
+    })
+
+    request.done(function (response) {
+        let form = selectorObject.closest('form'),
+            dynamicContainer = form.querySelector('.div--dynamic-select')
+
+        let container = document.createElement('div')
+        container.className = 'mb-3'
+        container.id = `div__dynamic-field--${containerName}`
+
+        dynamicContainer.appendChild(container)
+
+        let label = document.createElement('label')
+        label.setAttribute('for', `select__dynamic-field--${containerName}`)
+        label.innerHTML = `${selectLabel} <span class="text-danger">*</span>`
+
+        let select = document.createElement('select')
+        select.name = selectName
+        select.id = `select__dynamic-field--${containerName}`
+        select.className = 'form-select'
+        select.setAttribute('required', '')
+
+        let containerSelector = document.getElementById(container.id)
+        containerSelector.appendChild(label)
+        containerSelector.appendChild(select)
+
+        response.data.forEach(function (element, index) {
+            let option = document.createElement('option')
+            option.value = element.value
+            option.innerHTML = element.text
+            option.setAttribute('data-extra', `${element.extra}`)
+            select.appendChild(option)
+        });
+    })
+
+    request.fail(function (request) {
+        if (!request.hasOwnProperty('responseJSON')) {
+            let title = 'Request Execution',
+                description = 'An error occurred while executing the request',
+                type = 'danger'
+
+            buildToast(title, description, type)
+
+            return
+        }
+
+        if (!request.responseJSON.data) {
+            let title = request.responseJSON.title,
+                description = request.responseJSON.description,
+                type = request.responseJSON.type
+
+            buildToast(title, description, type)
+        }
+    })
+}
+
+/**
+ * --------------------------------------------------------------------------
  * Toast notification.
  * --------------------------------------------------------------------------
  */
