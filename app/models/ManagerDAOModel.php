@@ -50,6 +50,36 @@ class ManagerDAOModel
     }
 
     /**
+     * Fetches the manager's data using his unique id.
+     *
+     * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
+     *                            database.
+     *
+     * @return array An associative array holding the manager list.
+     */
+    public function getManagerById($id)
+    {
+        $statement = "
+            SELECT
+                managerT.id,
+                managerT.jobCode,
+                firstSurname,
+                secondSurname,
+                firstName,
+                managerT.isActive
+            FROM
+                data.Manager AS managerT
+            INNER JOIN
+                data.Person AS personT
+                ON personT.jobCode = managerT.jobCode
+            WHERE
+                managerT.id = $id;
+        ";
+
+        return DatabaseConnection::dqlStatement($statement);
+    }
+
+    /**
      * Fetches the manager's data using his unique key.
      *
      * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
