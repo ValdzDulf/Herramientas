@@ -20,6 +20,38 @@ use core\models\DatabaseConnection;
 class ManagerDAOModel
 {
     /**
+     * Fetches all active managers.
+     *
+     * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
+     *                            database.
+     *
+     * @return array An associative array holding the manager list.
+     */
+    public function getActiveManagers()
+    {
+        $statement = "
+            SELECT
+                managerT.id,
+                managerT.jobCode,
+                firstSurname,
+                secondSurname,
+                firstName,
+                managerT.isActive
+            FROM
+                data.Manager AS managerT
+            INNER JOIN
+                data.Person AS personT
+                ON personT.jobCode = managerT.jobCode
+            WHERE
+                managerT.isActive = 1
+            ORDER BY
+                firstSurname, secondSurname, firstSurname
+        ";
+
+        return DatabaseConnection::dqlStatement($statement);
+    }
+
+    /**
      * Fetches all managers, no matter their activation status.
      *
      * @throws DatabaseException  Will throw the exception if errors exist during a transaction with the
