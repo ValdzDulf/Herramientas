@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use core\exceptions\InputDataException;
 use Exception;
 use core\exceptions\ApplicationException;
 
 use core\models\MessageModel;
 use core\models\WebServiceResponseModel;
 
+use app\models\ClientDAOModel;
 use app\models\ManagerDAOModel;
 use app\models\ProfileDAOModel;
 
@@ -118,6 +120,68 @@ class SelectorBuilder
                     'danger', 'Unauthorized HTTP Method', $appEx->getMessage()
             );
             http_response_code(405);
+        } catch (Exception $ex) {
+            $webServiceResponse->message = new MessageModel('danger', 'Uncaught Exception', $ex->getMessage());
+            $webServiceResponse->statusCode = 400;
+            http_response_code(400);
+        } finally {
+            echo json_encode(
+                    $webServiceResponse, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            );
+
+            # Clears explicitly the variables used.
+            foreach (get_defined_vars() as $key => $var) {
+                unset(${$key});
+            }
+        }
+    }
+
+    /**
+     * Builds the clients options available to a manager.
+     *
+     * @return void
+     */
+    public function getClientsExcludingManager()
+    {
+        $webServiceResponse = new WebServiceResponseModel();
+        $webServiceResponse->accessToken = $_SESSION['accessToken'];
+
+        $webServiceResponse->data = [];
+        $webServiceResponse->data[] = ['extra' => null, 'value' => '', 'text' => 'Select an option'];
+
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+                throw new ApplicationException('Method Not Allowed');
+            }
+
+            if (empty($_GET['managerId'])) {
+                throw new InputDataException('This field is required');
+            }
+
+            $clientDAO = new ClientDAOModel();
+            $list = $clientDAO->getClientsExcludingManager($_GET['managerId']);
+
+            foreach ($list as $client) {
+                $text = "{$client['internalKey']} - {$client['descriptiveName']}";
+                $value = $client['id'];
+                $extra = null;
+
+                $webServiceResponse->data[] = ['extra' => $extra, 'value' => $value, 'text' => $text];
+            }
+
+            $webServiceResponse->statusCode = 200;
+            $webServiceResponse->message = new MessageModel('success', 'Get Client List', 'OK');
+            http_response_code(200);
+        } catch (ApplicationException $appEx) {
+            $webServiceResponse->statusCode = 405;
+            $webServiceResponse->message = new MessageModel(
+                    'danger', 'Unauthorized HTTP Method', $appEx->getMessage()
+            );
+            http_response_code(405);
+        } catch (InputDataException $idEx) {
+            $webServiceResponse->statusCode = 422;
+            $webServiceResponse->message = new MessageModel('danger', 'Input Data', $idEx->getMessage());
+            http_response_code(422);
         } catch (Exception $ex) {
             $webServiceResponse->message = new MessageModel('danger', 'Uncaught Exception', $ex->getMessage());
             $webServiceResponse->statusCode = 400;
