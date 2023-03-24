@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
-use core\exceptions\InputDataException;
 use Exception;
 use core\exceptions\ApplicationException;
+use core\exceptions\InputDataException;
 
 use core\models\MessageModel;
 use core\models\WebServiceResponseModel;
